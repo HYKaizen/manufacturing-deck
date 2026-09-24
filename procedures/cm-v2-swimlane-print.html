@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CM v2.0 Swimlane — Escape Trailers</title>
+<style>
+@page { size: 17in 11in landscape; margin: 0.4in; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,Helvetica,sans-serif;font-size:8.5pt;color:#222;background:#fff;padding:10px}
+h1{font-size:13pt;text-align:center;margin-bottom:2px}
+.sub{text-align:center;font-size:8pt;color:#555;margin-bottom:8px}
+
+.swimlane{width:100%;border-collapse:collapse;table-layout:fixed}
+.swimlane th,.swimlane td{border:1px solid #999;padding:2px;vertical-align:middle;text-align:center;height:42px}
+.swimlane th{width:70px;font-size:7.5pt;font-weight:700;writing-mode:horizontal-tb;background:#eee}
+
+/* Lane header colors */
+.lh-cm{background:#dfe6e9!important}
+.lh-est{background:#ffeaa7!important}
+.lh-eng{background:#aed6f1!important}
+.lh-sc{background:#c8a2c8!important}
+.lh-op{background:#f5b7b1!important}
+.lh-qual{background:#a3e4d7!important}
+.lh-sales{background:#f5b7b1!important;background:#fadbd8!important}
+.lh-all{background:#d5d8dc!important}
+
+/* Node boxes */
+.n{display:inline-block;border-radius:5px;padding:2px 4px;font-size:7.5pt;line-height:1.2;max-width:95%;white-space:normal}
+.n b{display:block;color:#c0392b;font-size:7pt}
+.proc{background:#fff;border:1.5px solid #555}
+.dec{background:#fff;border:1.5px dashed #c0392b}
+.qual{background:#a3e4d7;border:1.5px solid #1abc9c;font-weight:600}
+.qual-dec{background:#a3e4d7;border:1.5px dashed #1abc9c;font-weight:600}
+.start-n{background:#27ae60;color:#fff;border-radius:50%;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:8pt}
+.end-n{background:#c0392b;color:#fff;border-radius:50%;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:8pt}
+.new{background:#c0392b;color:#fff;font-size:5.5pt;padding:0 3px;border-radius:2px;font-weight:700;vertical-align:super}
+
+/* Arrow indicators in cells */
+.arr{font-size:7pt;color:#27ae60;display:block;margin-top:1px}
+.arr-no{font-size:6.5pt;color:#c0392b;display:block}
+
+/* Gate summary */
+.gates{margin-top:8px;width:100%;border-collapse:collapse;font-size:7.5pt}
+.gates th{background:#a3e4d7;padding:3px 6px;border:1px solid #999;text-align:left}
+.gates td{padding:3px 6px;border:1px solid #999}
+
+/* Decision legend */
+.legend{margin-top:6px;font-size:7pt;text-align:center;color:#555}
+.legend span{margin:0 8px}
+
+.footer{text-align:center;font-size:6.5pt;color:#999;margin-top:6px}
+
+@media print{
+  body{padding:0}
+}
+</style>
+</head>
+<body>
+
+<h1>🔄 Escape Trailers — Change Management Process v2.0</h1>
+<p class="sub">Swimlane Flowchart · 34 Steps · 3 Quality Gates · Rev 2.0 · February 24, 2026</p>
+
+<div class="legend">
+  <span>⬜ Process step</span>
+  <span style="border:1px dashed #c0392b;padding:0 4px">◇ Decision</span>
+  <span style="background:#a3e4d7;padding:0 4px;border-radius:3px">★ NEW Quality Gate</span>
+  <span style="color:#27ae60">→ Yes/Forward</span>
+  <span style="color:#c0392b">⤺ No/Loop-back</span>
+</div>
+
+<!-- Phase 1: Steps 1–11 (Initiation → Sample Gate) -->
+<table class="swimlane" style="margin-top:6px">
+<colgroup><col style="width:70px"><col span="11" style="width:auto"></colgroup>
+<thead>
+<tr style="background:#f5f5f5;font-size:7pt;height:18px">
+  <th></th>
+  <th>Step 1</th><th>Step 2</th><th>Step 3</th><th>Step 4</th><th>Step 5</th>
+  <th>Step 6</th><th>Step 7</th><th>Step 8</th><th>Step 9</th><th>Step 10</th><th>Step 11</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <th class="lh-cm">CM Team</th>
+  <td><span class="start-n">①</span></td>
+  <td><span class="n proc"><b>②</b>Receive CM Request</span></td>
+  <td></td>
+  <td><span class="n dec"><b>④</b>Change Necessary?</span><span class="arr">Y→⑤</span><span class="arr-no">N→End</span></td>
+  <td></td>
+  <td><span class="n dec"><b>⑥</b>Cost Feasible?</span><span class="arr">Y→⑦</span><span class="arr-no">N→End</span></td>
+  <td><span class="n proc"><b>⑦</b>Document Approvals</span></td>
+  <td></td><td></td><td></td><td></td>
+</tr>
+<tr>
+  <th class="lh-est">Estimation</th>
+  <td></td><td></td><td></td><td></td>
+  <td><span class="n proc"><b>⑤</b>Revenue/Cost Calculation</span></td>
+  <td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+<tr>
+  <th class="lh-eng">Engineering</th>
+  <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+  <td><span class="n proc"><b>⑧</b>Generate BOM Prototyping</span></td>
+  <td><span class="n proc"><b>⑨</b>Get Samples</span></td>
+  <td></td><td></td>
+</tr>
+<tr>
+  <th class="lh-qual">Quality</th>
+  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+  <td><span class="n qual"><b>⑩★</b>Sample Inspection <span class="new">NEW</span></span></td>
+  <td><span class="n qual-dec"><b>⑪★</b>Sample OK? <span class="new">NEW</span></span><span class="arr">Y→⑫</span><span class="arr-no">N→⑧</span></td>
+</tr>
+<tr>
+  <th class="lh-all">All Teams</th>
+  <td></td><td></td>
+  <td><span class="n proc"><b>③</b>Cross-Functional Review</span></td>
+  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+</tbody>
+</table>
+
+<!-- Phase 2: Steps 12–23 (Engineering Validation → Quality Approval) -->
+<table class="swimlane" style="margin-top:4px">
+<colgroup><col style="width:70px"><col span="12" style="width:auto"></colgroup>
+<thead>
+<tr style="background:#f5f5f5;font-size:7pt;height:18px">
+  <th></th>
+  <th>Step 12</th><th>Step 13</th><th>Step 14</th><th>Step 15</th><th>Step 16</th>
+  <th>Step 17</th><th>Step 18</th><th>Step 19</th><th>Step 20</th><th>Step 21</th><th>Step 22</th><th>Step 23</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <th class="lh-eng">Engineering</th>
+  <td><span class="n proc"><b>⑫</b>ETI Generation to BOM</span></td>
+  <td><span class="n proc"><b>⑬</b>Proceed Eng. Validation</span></td>
+  <td><span class="n proc"><b>⑭</b>Conduct Validation Tests</span></td>
+  <td><span class="n dec"><b>⑮</b>Validation OK?</span><span class="arr">Y→⑯</span><span class="arr-no">N→⑧</span></td>
+  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+<tr>
+  <th class="lh-qual">Quality</th>
+  <td></td><td></td><td></td><td></td>
+  <td><span class="n qual-dec"><b>⑯★</b>Reviews Validation <span class="new">NEW</span></span><span class="arr">Y→⑰</span><span class="arr-no">N→⑬</span></td>
+  <td></td><td></td><td></td>
+  <td><span class="n qual"><b>⑳</b>Proceed QC</span></td>
+  <td><span class="n qual"><b>㉑</b>Conduct QC Inspections</span></td>
+  <td><span class="n qual-dec"><b>㉒</b>QC OK?</span><span class="arr">Y→㉓</span><span class="arr-no">N→⑰</span></td>
+  <td><span class="n qual"><b>㉓</b>Quality Approval</span></td>
+</tr>
+<tr>
+  <th class="lh-op">Operation</th>
+  <td></td><td></td><td></td><td></td><td></td>
+  <td><span class="n proc"><b>⑰</b>Proceed Operational Trials</span></td>
+  <td><span class="n proc"><b>⑱</b>Conduct Trials</span></td>
+  <td><span class="n dec"><b>⑲</b>Trials OK?</span><span class="arr">Y→⑳</span><span class="arr-no">N→Close CM</span></td>
+  <td></td><td></td><td></td><td></td>
+</tr>
+</tbody>
+</table>
+
+<!-- Phase 3: Steps 24–34 (Sales → Supply Chain → End) -->
+<table class="swimlane" style="margin-top:4px">
+<colgroup><col style="width:70px"><col span="11" style="width:auto"></colgroup>
+<thead>
+<tr style="background:#f5f5f5;font-size:7pt;height:18px">
+  <th></th>
+  <th>Step 24</th><th>Step 25</th><th>Step 26</th><th>Step 27</th><th>Step 28</th>
+  <th>Step 29</th><th>Step 30</th><th>Step 31</th><th>Step 32</th><th>Step 33</th><th>Step 34</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <th class="lh-sales">Sales</th>
+  <td><span class="n proc"><b>㉔</b>Sales Communication</span></td>
+  <td><span class="n proc"><b>㉕</b>Update Config/Prices</span></td>
+  <td><span class="n proc"><b>㉖</b>1st Customer Affected</span></td>
+  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+</tr>
+<tr>
+  <th class="lh-sc">Supply Chain</th>
+  <td></td><td></td><td></td>
+  <td><span class="n proc"><b>㉗</b>Order Parts for Serial Prod.</span></td>
+  <td><span class="n proc"><b>㉘</b>Communicate Arrival Dates</span></td>
+  <td><span class="n proc"><b>㉙</b>Check Inventory</span></td>
+  <td><span class="n proc"><b>㉚</b>Affected Trailers</span></td>
+  <td><span class="n proc"><b>㉛</b>Supply Change Approval</span></td>
+  <td><span class="n proc"><b>㉜</b>Update Inventory/BOM</span></td>
+  <td></td><td></td>
+</tr>
+<tr>
+  <th class="lh-op">Operation</th>
+  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+  <td><span class="n dec"><b>㉝</b>Training Needed?</span><span class="arr">Y→Train→End</span><span class="arr-no">N→End</span></td>
+  <td></td>
+</tr>
+<tr>
+  <th class="lh-all">All Teams</th>
+  <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+  <td><span class="end-n">㉞</span></td>
+</tr>
+</tbody>
+</table>
+
+<!-- Quality Gates Summary -->
+<table class="gates" style="margin-top:8px;max-width:700px">
+<tr><th colspan="4" style="text-align:center;font-size:8.5pt">★ Quality Gates (NEW in v2.0)</th></tr>
+<tr style="background:#eee"><th>Gate</th><th>Steps</th><th>When</th><th>Fail Action</th></tr>
+<tr><td><b>Gate 1</b> — Sample Inspection</td><td>⑩–⑪</td><td>Before engineering work</td><td>→ Back to ⑧ (revise & re-sample)</td></tr>
+<tr><td><b>Gate 2</b> — Validation Review</td><td>⑯</td><td>After eng. validation tests</td><td>→ Back to ⑬ (re-run validation)</td></tr>
+<tr><td><b>Gate 3</b> — Final QC</td><td>⑳–㉓</td><td>After operational trials</td><td>→ Back to ⑰ (re-run trials)</td></tr>
+</table>
+
+<p class="footer">Escape Trailer Industries Ltd. · CM Process v2.0 · Author: Hakan Yasar · Document: ET-CIP-142</p>
+
+</body>
+</html>

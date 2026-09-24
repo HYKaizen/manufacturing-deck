@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escape Trailers — Change Management v2.0 Swimlane Flowchart</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#f5f6fa;color:#2d3436;padding:20px}
+h1{text-align:center;font-size:1.4em;margin-bottom:4px;color:#2d3436}
+.subtitle{text-align:center;font-size:.85em;color:#636e72;margin-bottom:16px}
+.legend{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;font-size:.75em}
+.legend span{display:flex;align-items:center;gap:4px}
+.legend .swatch{width:14px;height:14px;border-radius:3px;border:1px solid #0001}
+
+.chart-wrap{overflow-x:auto;padding-bottom:20px}
+.chart{display:grid;grid-template-columns:110px repeat(34,minmax(120px,1fr));min-width:4400px;gap:0;position:relative}
+
+/* Lane labels */
+.lane-label{
+  position:sticky;left:0;z-index:10;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:.75em;text-align:center;
+  padding:6px 4px;border-right:2px solid #dfe6e9;
+  writing-mode:horizontal-tb;min-height:70px;
+  background:#fff;
+}
+/* Lane rows */
+.lane-row{display:contents}
+.cell{
+  min-height:70px;padding:4px;display:flex;align-items:center;justify-content:center;
+  border-bottom:1px solid #dfe6e9;border-right:1px dotted #ecf0f1;position:relative;
+}
+
+/* Colors per lane */
+.lane-cm .lane-label{background:#dfe6e9;color:#2d3436}
+.lane-est .lane-label{background:#ffeaa7;color:#6c5b00}
+.lane-eng .lane-label{background:#74b9ff;color:#003366}
+.lane-sc .lane-label{background:#a29bfe;color:#2d1b69}
+.lane-op .lane-label{background:#fab1a0;color:#6b2a1a}
+.lane-qual .lane-label{background:#55efc4;color:#00573f}
+.lane-sales .lane-label{background:#fd79a8;color:#6b1740}
+.lane-all .lane-label{background:#b2bec3;color:#2d3436}
+
+.lane-cm .cell{background:#f8f9fa}
+.lane-est .cell{background:#fffdf0}
+.lane-eng .cell{background:#f0f7ff}
+.lane-sc .cell{background:#f5f3ff}
+.lane-op .cell{background:#fff5f2}
+.lane-qual .cell{background:#f0fff8}
+.lane-sales .cell{background:#fff0f5}
+.lane-all .cell{background:#f8f9fa}
+
+/* Node types */
+.node{
+  border-radius:8px;padding:6px 8px;font-size:.68em;line-height:1.25;
+  text-align:center;max-width:110px;width:100%;
+  box-shadow:0 1px 3px #0002;cursor:default;position:relative;
+}
+.node-start,.node-end{border-radius:50%;width:50px;height:50px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.72em}
+.node-start{background:#00b894;color:#fff}
+.node-end{background:#d63031;color:#fff}
+.node-process{background:#fff;border:2px solid #636e72}
+.node-decision{background:#fff;border:2px solid #e17055;transform:rotate(0deg);border-radius:4px;border-style:dashed}
+.node-quality{background:#55efc4;border:2px solid #00b894;font-weight:600}
+.node-quality-decision{background:#55efc4;border:2px solid #00b894;border-style:dashed;font-weight:600}
+.node .step-num{font-weight:700;color:#e17055;display:block;font-size:.9em}
+.node-quality .step-num,.node-quality-decision .step-num{color:#00573f}
+.node .new-badge{background:#e17055;color:#fff;font-size:.6em;padding:1px 4px;border-radius:3px;font-weight:700;margin-left:2px}
+
+/* Arrows — using SVG overlay */
+svg.arrows{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5}
+
+/* Print */
+@media print{
+  body{padding:5px}
+  .chart-wrap{overflow:visible}
+  .chart{min-width:unset;font-size:.6em}
+}
+</style>
+</head>
+<body>
+<h1>🔄 Escape Trailers — Change Management Process v2.0</h1>
+<p class="subtitle">Swimlane Flowchart · 34 Steps · 3 Quality Gates · February 2026</p>
+<div class="legend">
+  <span><span class="swatch" style="background:#dfe6e9"></span> CM Team</span>
+  <span><span class="swatch" style="background:#ffeaa7"></span> Estimation</span>
+  <span><span class="swatch" style="background:#74b9ff"></span> Engineering</span>
+  <span><span class="swatch" style="background:#a29bfe"></span> Supply Chain</span>
+  <span><span class="swatch" style="background:#fab1a0"></span> Operation</span>
+  <span><span class="swatch" style="background:#55efc4"></span> Quality</span>
+  <span><span class="swatch" style="background:#fd79a8"></span> Sales</span>
+  <span><span class="swatch" style="background:#b2bec3"></span> All Teams</span>
+  <span><span class="swatch" style="background:#fff;border:2px dashed #e17055"></span> Decision</span>
+  <span><span class="swatch" style="background:#55efc4;border:2px solid #00b894"></span> NEW in v2.0</span>
+</div>
+
+<div class="chart-wrap" id="chartWrap">
+<canvas id="arrowCanvas" style="position:absolute;top:0;left:0;pointer-events:none;z-index:5"></canvas>
+<div class="chart" id="chart">
+
+<!-- LANE: CM Team — steps 1,2,4,6,7 -->
+<div class="lane-row lane-cm">
+  <div class="lane-label">CM Team</div>
+  <div class="cell" data-col="1"><div class="node node-start" id="s1">Start<br>①</div></div>
+  <div class="cell" data-col="2"><div class="node node-process" id="s2"><span class="step-num">②</span>Receive CM Request</div></div>
+  <div class="cell" data-col="3"></div>
+  <div class="cell" data-col="4"><div class="node node-decision" id="s4"><span class="step-num">④</span>Change Necessary?</div></div>
+  <div class="cell" data-col="5"></div>
+  <div class="cell" data-col="6"><div class="node node-decision" id="s6"><span class="step-num">⑥</span>Cost Feasible?</div></div>
+  <div class="cell" data-col="7"><div class="node node-process" id="s7"><span class="step-num">⑦</span>Document Approvals</div></div>
+  <div class="cell" data-col="8"></div><div class="cell" data-col="9"></div>
+  <div class="cell" data-col="10"></div><div class="cell" data-col="11"></div>
+  <div class="cell" data-col="12"></div><div class="cell" data-col="13"></div>
+  <div class="cell" data-col="14"></div><div class="cell" data-col="15"></div>
+  <div class="cell" data-col="16"></div><div class="cell" data-col="17"></div>
+  <div class="cell" data-col="18"></div><div class="cell" data-col="19"></div>
+  <div class="cell" data-col="20"></div><div class="cell" data-col="21"></div>
+  <div class="cell" data-col="22"></div><div class="cell" data-col="23"></div>
+  <div class="cell" data-col="24"></div><div class="cell" data-col="25"></div>
+  <div class="cell" data-col="26"></div><div class="cell" data-col="27"></div>
+  <div class="cell" data-col="28"></div><div class="cell" data-col="29"></div>
+  <div class="cell" data-col="30"></div><div class="cell" data-col="31"></div>
+  <div class="cell" data-col="32"></div><div class="cell" data-col="33"></div>
+  <div class="cell" data-col="34"></div>
+</div>
+
+<!-- LANE: Estimation — step 5 -->
+<div class="lane-row lane-est">
+  <div class="lane-label">Estimation</div>
+  <div class="cell" data-col="1"></div><div class="cell" data-col="2"></div>
+  <div class="cell" data-col="3"></div><div class="cell" data-col="4"></div>
+  <div class="cell" data-col="5"><div class="node node-process" id="s5"><span class="step-num">⑤</span>Revenue / Cost Calculation</div></div>
+  <div class="cell" data-col="6"></div><div class="cell" data-col="7"></div>
+  <div class="cell" data-col="8"></div><div class="cell" data-col="9"></div>
+  <div class="cell" data-col="10"></div><div class="cell" data-col="11"></div>
+  <div class="cell" data-col="12"></div><div class="cell" data-col="13"></div>
+  <div class="cell" data-col="14"></div><div class="cell" data-col="15"></div>
+  <div class="cell" data-col="16"></div><div class="cell" data-col="17"></div>
+  <div class="cell" data-col="18"></div><div class="cell" data-col="19"></div>
+  <div class="cell" data-col="20"></div><div class="cell" data-col="21"></div>
+  <div class="cell" data-col="22"></div><div class="cell" data-col="23"></div>
+  <div class="cell" data-col="24"></div><div class="cell" data-col="25"></div>
+  <div class="cell" data-col="26"></div><div class="cell" data-col="27"></div>
+  <div class="cell" data-col="28"></div><div class="cell" data-col="29"></div>
+  <div class="cell" data-col="30"></div><div class="cell" data-col="31"></div>
+  <div class="cell" data-col="32"></div><div class="cell" data-col="33"></div>
+  <div class="cell" data-col="34"></div>
+</div>
+
+<!-- LANE: Engineering — steps 8,9,12,13,14,15 -->
+<div class="lane-row lane-eng">
+  <div class="lane-label">Engineering</div>
+  <div class="cell" data-col="1"></div><div class="cell" data-col="2"></div>
+  <div class="cell" data-col="3"></div><div class="cell" data-col="4"></div>
+  <div class="cell" data-col="5"></div><div class="cell" data-col="6"></div>
+  <div class="cell" data-col="7"></div>
+  <div class="cell" data-col="8"><div class="node node-process" id="s8"><span class="step-num">⑧</span>Generate BOM Prototyping</div></div>
+  <div class="cell" data-col="9"><div class="node node-process" id="s9"><span class="step-num">⑨</span>Get Samples</div></div>
+  <div class="cell" data-col="10"></div><div class="cell" data-col="11"></div>
+  <div class="cell" data-col="12"><div class="node node-process" id="s12"><span class="step-num">⑫</span>ETI Generation to BOM</div></div>
+  <div class="cell" data-col="13"><div class="node node-process" id="s13"><span class="step-num">⑬</span>Proceed Eng. Validation</div></div>
+  <div class="cell" data-col="14"><div class="node node-process" id="s14"><span class="step-num">⑭</span>Conduct Validation Tests</div></div>
+  <div class="cell" data-col="15"><div class="node node-decision" id="s15"><span class="step-num">⑮</span>Validation Successful?</div></div>
+  <div class="cell" data-col="16"></div><div class="cell" data-col="17"></div>
+  <div class="cell" data-col="18"></div><div class="cell" data-col="19"></div>
+  <div class="cell" data-col="20"></div><div class="cell" data-col="21"></div>
+  <div class="cell" data-col="22"></div><div class="cell" data-col="23"></div>
+  <div class="cell" data-col="24"></div><div class="cell" data-col="25"></div>
+  <div class="cell" data-col="26"></div><div class="cell" data-col="27"></div>
+  <div class="cell" data-col="28"></div><div class="cell" data-col="29"></div>
+  <div class="cell" data-col="30"></div><div class="cell" data-col="31"></div>
+  <div class="cell" data-col="32"></div><div class="cell" data-col="33"></div>
+  <div class="cell" data-col="34"></div>
+</div>
+
+<!-- LANE: Supply Chain — steps 27-32 -->
+<div class="lane-row lane-sc">
+  <div class="lane-label">Supply Chain</div>
+  <div class="cell" data-col="1"></div><div class="cell" data-col="2"></div>
+  <div class="cell" data-col="3"></div><div class="cell" data-col="4"></div>
+  <div class="cell" data-col="5"></div><div class="cell" data-col="6"></div>
+  <div class="cell" data-col="7"></div><div class="cell" data-col="8"></div>
+  <div class="cell" data-col="9"></div><div class="cell" data-col="10"></div>
+  <div class="cell" data-col="11"></div><div class="cell" data-col="12"></div>
+  <div class="cell" data-col="13"></div><div class="cell" data-col="14"></div>
+  <div class="cell" data-col="15"></div><div class="cell" data-col="16"></div>
+  <div class="cell" data-col="17"></div><div class="cell" data-col="18"></div>
+  <div class="cell" data-col="19"></div><div class="cell" data-col="20"></div>
+  <div class="cell" data-col="21"></div><div class="cell" data-col="22"></div>
+  <div class="cell" data-col="23"></div><div class="cell" data-col="24"></div>
+  <div class="cell" data-col="25"></div><div class="cell" data-col="26"></div>
+  <div class="cell" data-col="27"><div class="node node-process" id="s27"><span class="step-num">㉗</span>Order Parts for Serial Prod.</div></div>
+  <div class="cell" data-col="28"><div class="node node-process" id="s28"><span class="step-num">㉘</span>Communicate Arrival Dates</div></div>
+  <div class="cell" data-col="29"><div class="node node-process" id="s29"><span class="step-num">㉙</span>Check Inventory Current Parts</div></div>
+  <div class="cell" data-col="30"><div class="node node-process" id="s30"><span class="step-num">㉚</span>Get Affected Trailers</div></div>
+  <div class="cell" data-col="31"><div class="node node-process" id="s31"><span class="step-num">㉛</span>Supply Change Approval</div></div>
+  <div class="cell" data-col="32"><div class="node node-process" id="s32"><span class="step-num">㉜</span>Update Inventory / BOM</div></div>
+  <div class="cell" data-col="33"></div>
+  <div class="cell" data-col="34"></div>
+</div>
+
+<!-- LANE: Operation — steps 17,18,19,33 -->
+<div class="lane-row lane-op">
+  <div class="lane-label">Operation</div>
+  <div class="cell" data-col="1"></div><div class="cell" data-col="2"></div>
+  <div class="cell" data-col="3"></div><div class="cell" data-col="4"></div>
+  <div class="cell" data-col="5"></div><div class="cell" data-col="6"></div>
+  <div class="cell" data-col="7"></div><div class="cell" data-col="8"></div>
+  <div class="cell" data-col="9"></div><div class="cell" data-col="10"></div>
+  <div class="cell" data-col="11"></div><div class="cell" data-col="12"></div>
+  <div class="cell" data-col="13"></div><div class="cell" data-col="14"></div>
+  <div class="cell" data-col="15"></div><div class="cell" data-col="16"></div>
+  <div class="cell" data-col="17"><div class="node node-process" id="s17"><span class="step-num">⑰</span>Proceed Operational Trials</div></div>
+  <div class="cell" data-col="18"><div class="node node-process" id="s18"><span class="step-num">⑱</span>Conduct Operational Trials</div></div>
+  <div class="cell" data-col="19"><div class="node node-decision" id="s19"><span class="step-num">⑲</span>Trials Successful?</div></div>
+  <div class="cell" data-col="20"></div><div class="cell" data-col="21"></div>
+  <div class="cell" data-col="22"></div><div class="cell" data-col="23"></div>
+  <div class="cell" data-col="24"></div><div class="cell" data-col="25"></div>
+  <div class="cell" data-col="26"></div><div class="cell" data-col="27"></div>
+  <div class="cell" data-col="28"></div><div class="cell" data-col="29"></div>
+  <div class="cell" data-col="30"></div><div class="cell" data-col="31"></div>
+  <div class="cell" data-col="32"></div>
+  <div class="cell" data-col="33"><div class="node node-decision" id="s33"><span class="step-num">㉝</span>Training Needed?</div></div>
+  <div class="cell" data-col="34"></div>
+</div>
+
+<!-- LANE: Quality — steps 10,11,16,20,21,22,23 -->
+<div class="lane-row lane-qual">
+  <div class="lane-label">Quality</div>
+  <div class="cell" data-col="1"></div><div class="cell" data-col="2"></div>
+  <div class="cell" data-col="3"></div><div class="cell" data-col="4"></div>
+  <div class="cell" data-col="5"></div><div class="cell" data-col="6"></div>
+  <div class="cell" data-col="7"></div><div class="cell" data-col="8"></div>
+  <div class="cell" data-col="9"></div>
+  <div class="cell" data-col="10"><div class="node node-quality" id="s10"><span class="step-num">⑩ ★</span>Sample Inspection<span class="new-badge">NEW</span></div></div>
+  <div class="cell" data-col="11"><div class="node node-quality-decision" id="s11"><span class="step-num">⑪ ★</span>Sample OK?<span class="new-badge">NEW</span></div></div>
+  <div class="cell" data-col="12"></div><div class="cell" data-col="13"></div>
+  <div class="cell" data-col="14"></div><div class="cell" data-col="15"></div>
+  <div class="cell" data-col="16"><div class="node node-quality-decision" id="s16"><span class="step-num">⑯ ★</span>Reviews Validation<span class="new-badge">NEW</span></div></div>
+  <div class="cell" data-col="17"></div><div class="cell" data-col="18"></div>
+  <div class="cell" data-col="19"></div>
+  <div class="cell" data-col="20"><div class="node node-quality" id="s20"><span class="step-num">⑳</span>Proceed QC</div></div>
+  <div class="cell" data-col="21"><div class="node node-quality" id="s21"><span class="step-num">㉑</span>Conduct QC Inspections</div></div>
+  <div class="cell" data-col="22"><div class="node node-quality-decision" id="s22"><span class="step-num">㉒</span>QC Successful?</div></div>
+  <div class="cell" data-col="23"><div class="node node-quality" id="s23"><span class="step-num">㉓</span>Quality Approval</div></div>
+  <div class="cell" data-col="24"></div><div class="cell" data-col="25"></div>
+  <div class="cell" data-col="26"></div><div class="cell" data-col="27"></div>
+  <div class="cell" data-col="28"></div><div class="cell" data-col="29"></div>
+  <div class="cell" data-col="30"></div><div class="cell" data-col="31"></div>
+  <div class="cell" data-col="32"></div><div class="cell" data-col="33"></div>
+  <div class="cell" data-col="34"></div>
+</div>
+
+<!-- LANE: Sales — steps 24,25,26 -->
+<div class="lane-row lane-sales">
+  <div class="lane-label">Sales</div>
+  <div class="cell" data-col="1"></div><div class="cell" data-col="2"></div>
+  <div class="cell" data-col="3"></div><div class="cell" data-col="4"></div>
+  <div class="cell" data-col="5"></div><div class="cell" data-col="6"></div>
+  <div class="cell" data-col="7"></div><div class="cell" data-col="8"></div>
+  <div class="cell" data-col="9"></div><div class="cell" data-col="10"></div>
+  <div class="cell" data-col="11"></div><div class="cell" data-col="12"></div>
+  <div class="cell" data-col="13"></div><div class="cell" data-col="14"></div>
+  <div class="cell" data-col="15"></div><div class="cell" data-col="16"></div>
+  <div class="cell" data-col="17"></div><div class="cell" data-col="18"></div>
+  <div class="cell" data-col="19"></div><div class="cell" data-col="20"></div>
+  <div class="cell" data-col="21"></div><div class="cell" data-col="22"></div>
+  <div class="cell" data-col="23"></div>
+  <div class="cell" data-col="24"><div class="node node-process" id="s24"><span class="step-num">㉔</span>Sales Communication</div></div>
+  <div class="cell" data-col="25"><div class="node node-process" id="s25"><span class="step-num">㉕</span>Update Config / Prices</div></div>
+  <div class="cell" data-col="26"><div class="node node-process" id="s26"><span class="step-num">㉖</span>First Customer Affected</div></div>
+  <div class="cell" data-col="27"></div><div class="cell" data-col="28"></div>
+  <div class="cell" data-col="29"></div><div class="cell" data-col="30"></div>
+  <div class="cell" data-col="31"></div><div class="cell" data-col="32"></div>
+  <div class="cell" data-col="33"></div><div class="cell" data-col="34"></div>
+</div>
+
+<!-- LANE: All Teams — steps 3, 34 -->
+<div class="lane-row lane-all">
+  <div class="lane-label">All Teams</div>
+  <div class="cell" data-col="1"></div><div class="cell" data-col="2"></div>
+  <div class="cell" data-col="3"><div class="node node-process" id="s3"><span class="step-num">③</span>Cross-Functional Review</div></div>
+  <div class="cell" data-col="4"></div><div class="cell" data-col="5"></div>
+  <div class="cell" data-col="6"></div><div class="cell" data-col="7"></div>
+  <div class="cell" data-col="8"></div><div class="cell" data-col="9"></div>
+  <div class="cell" data-col="10"></div><div class="cell" data-col="11"></div>
+  <div class="cell" data-col="12"></div><div class="cell" data-col="13"></div>
+  <div class="cell" data-col="14"></div><div class="cell" data-col="15"></div>
+  <div class="cell" data-col="16"></div><div class="cell" data-col="17"></div>
+  <div class="cell" data-col="18"></div><div class="cell" data-col="19"></div>
+  <div class="cell" data-col="20"></div><div class="cell" data-col="21"></div>
+  <div class="cell" data-col="22"></div><div class="cell" data-col="23"></div>
+  <div class="cell" data-col="24"></div><div class="cell" data-col="25"></div>
+  <div class="cell" data-col="26"></div><div class="cell" data-col="27"></div>
+  <div class="cell" data-col="28"></div><div class="cell" data-col="29"></div>
+  <div class="cell" data-col="30"></div><div class="cell" data-col="31"></div>
+  <div class="cell" data-col="32"></div><div class="cell" data-col="33"></div>
+  <div class="cell" data-col="34"><div class="node node-end" id="s34">End<br>㉞</div></div>
+</div>
+
+</div><!-- .chart -->
+</div><!-- .chart-wrap -->
+
+<!-- Arrow overlay -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const wrap = document.getElementById('chartWrap');
+  const canvas = document.getElementById('arrowCanvas');
+  const ctx = canvas.getContext('2d');
+
+  function getCenter(id) {
+    const el = document.getElementById(id);
+    if (!el) return null;
+    const r = el.getBoundingClientRect();
+    const wr = wrap.getBoundingClientRect();
+    return {
+      x: r.left - wr.left + wrap.scrollLeft + r.width/2,
+      y: r.top - wr.top + wrap.scrollTop + r.height/2,
+      right: r.right - wr.left + wrap.scrollLeft,
+      left: r.left - wr.left + wrap.scrollLeft,
+      top: r.top - wr.top + wrap.scrollTop,
+      bottom: r.bottom - wr.top + wrap.scrollTop
+    };
+  }
+
+  // Define all connections: [from, to, type, label?]
+  // type: 'forward' (normal), 'yes', 'no', 'loop-back'
+  const connections = [
+    ['s1','s2','forward'],
+    ['s2','s3','forward'],  // CM→All (cross-lane down)
+    ['s3','s4','forward'],  // All→CM (cross-lane up)
+    ['s4','s5','yes','Y'],
+    ['s5','s6','forward'],
+    ['s6','s7','yes','Y'],
+    ['s7','s8','forward'],
+    ['s8','s9','forward'],
+    ['s9','s10','forward'], // Eng→Quality
+    ['s10','s11','forward'],
+    ['s11','s12','yes','Y'], // Quality→Eng
+    ['s12','s13','forward'],
+    ['s13','s14','forward'],
+    ['s14','s15','forward'],
+    ['s15','s16','yes','Y'], // Eng→Quality
+    ['s16','s17','yes','Y'], // Quality→Op
+    ['s17','s18','forward'],
+    ['s18','s19','forward'],
+    ['s19','s20','yes','Y'], // Op→Quality
+    ['s20','s21','forward'],
+    ['s21','s22','forward'],
+    ['s22','s23','yes','Y'],
+    ['s23','s24','forward'], // Quality→Sales
+    ['s24','s25','forward'],
+    ['s25','s26','forward'],
+    ['s26','s27','forward'], // Sales→SC
+    ['s27','s28','forward'],
+    ['s28','s29','forward'],
+    ['s29','s30','forward'],
+    ['s30','s31','forward'],
+    ['s31','s32','forward'],
+    ['s32','s33','forward'], // SC→Op
+    ['s33','s34','forward'],
+  ];
+
+  // Loop-back connections
+  const loopbacks = [
+    ['s4', null, 'N → End'],      // Step 4 No
+    ['s6', null, 'N → End'],      // Step 6 No
+    ['s11','s8', 'N → ⑧'],       // Step 11 No → back to 8
+    ['s15','s8', 'N → ⑧'],       // Step 15 No → back to 8
+    ['s16','s13','N → ⑬'],       // Step 16 No → back to 13
+    ['s19', null,'N → Close'],    // Step 19 No → close
+    ['s22','s17','N → ⑰'],       // Step 22 No → back to 17
+  ];
+
+  function resize() {
+    const chart = document.getElementById('chart');
+    canvas.width = chart.scrollWidth;
+    canvas.height = chart.scrollHeight;
+    canvas.style.width = chart.scrollWidth + 'px';
+    canvas.style.height = chart.scrollHeight + 'px';
+  }
+
+  function drawArrow(fromPt, toPt, color='#636e72', lineWidth=1.5) {
+    ctx.beginPath();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = lineWidth;
+    ctx.moveTo(fromPt.x, fromPt.y);
+    ctx.lineTo(toPt.x, toPt.y);
+    ctx.stroke();
+    // Arrowhead
+    const angle = Math.atan2(toPt.y - fromPt.y, toPt.x - fromPt.x);
+    const hs = 8;
+    ctx.beginPath();
+    ctx.fillStyle = color;
+    ctx.moveTo(toPt.x, toPt.y);
+    ctx.lineTo(toPt.x - hs*Math.cos(angle-0.4), toPt.y - hs*Math.sin(angle-0.4));
+    ctx.lineTo(toPt.x - hs*Math.cos(angle+0.4), toPt.y - hs*Math.sin(angle+0.4));
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  function drawLabel(x, y, text, color='#636e72') {
+    ctx.font = 'bold 10px sans-serif';
+    ctx.fillStyle = color;
+    ctx.fillText(text, x, y);
+  }
+
+  function draw() {
+    resize();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Forward connections
+    for (const [fromId, toId, type, label] of connections) {
+      const f = getCenter(fromId);
+      const t = getCenter(toId);
+      if (!f || !t) continue;
+
+      const color = (type === 'yes') ? '#00b894' : '#636e72';
+      const fromPt = { x: f.right, y: f.y };
+      const toPt = { x: t.left, y: t.y };
+
+      // If same row (close Y), draw straight
+      if (Math.abs(f.y - t.y) < 5) {
+        drawArrow(fromPt, toPt, color);
+      } else {
+        // Cross-lane: go right, then down/up, then right
+        const midX = (fromPt.x + toPt.x) / 2;
+        ctx.beginPath();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.5;
+        ctx.moveTo(fromPt.x, fromPt.y);
+        ctx.lineTo(midX, fromPt.y);
+        ctx.lineTo(midX, toPt.y);
+        ctx.lineTo(toPt.x, toPt.y);
+        ctx.stroke();
+        // Arrowhead at end
+        const hs = 8;
+        ctx.beginPath();
+        ctx.fillStyle = color;
+        ctx.moveTo(toPt.x, toPt.y);
+        ctx.lineTo(toPt.x - hs, toPt.y - 4);
+        ctx.lineTo(toPt.x - hs, toPt.y + 4);
+        ctx.closePath();
+        ctx.fill();
+      }
+      if (label) {
+        const lx = (fromPt.x + 10);
+        const ly = fromPt.y - 6;
+        drawLabel(lx, ly, label, color);
+      }
+    }
+
+    // Loop-back arrows (draw as red dashed going below)
+    for (const [fromId, toId, label] of loopbacks) {
+      const f = getCenter(fromId);
+      if (!f) continue;
+
+      ctx.beginPath();
+      ctx.strokeStyle = '#d63031';
+      ctx.lineWidth = 1.2;
+      ctx.setLineDash([4,3]);
+
+      if (toId) {
+        const t = getCenter(toId);
+        if (!t) continue;
+        // Draw loopback: down from node, left, up to target
+        const dropY = f.bottom + 14;
+        ctx.moveTo(f.x, f.bottom);
+        ctx.lineTo(f.x, dropY);
+        ctx.lineTo(t.x, dropY);
+        ctx.lineTo(t.x, t.bottom);
+        ctx.stroke();
+        // Arrowhead up
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        ctx.fillStyle = '#d63031';
+        ctx.moveTo(t.x, t.bottom);
+        ctx.lineTo(t.x - 4, t.bottom + 8);
+        ctx.lineTo(t.x + 4, t.bottom + 8);
+        ctx.closePath();
+        ctx.fill();
+        drawLabel(f.x + 4, dropY - 3, label, '#d63031');
+      } else {
+        // Dead end (No → End)
+        ctx.moveTo(f.x, f.bottom);
+        ctx.lineTo(f.x, f.bottom + 20);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        drawLabel(f.x + 4, f.bottom + 18, label, '#d63031');
+      }
+      ctx.setLineDash([]);
+    }
+  }
+
+  draw();
+  wrap.addEventListener('scroll', draw);
+  window.addEventListener('resize', draw);
+});
+</script>
+
+<div style="margin-top:20px;padding:12px 16px;background:#fff;border-radius:8px;box-shadow:0 1px 4px #0001;font-size:.8em;max-width:800px;margin-left:auto;margin-right:auto">
+<h3 style="margin-bottom:8px;color:#00b894">★ Quality Gates (NEW in v2.0)</h3>
+<table style="width:100%;border-collapse:collapse;font-size:.95em">
+<tr style="background:#f0fff8"><td style="padding:6px;border:1px solid #dfe6e9;font-weight:700">Gate 1 — Sample Inspection</td><td style="padding:6px;border:1px solid #dfe6e9">Steps ⑩–⑪ · Before engineering work · Fail → back to ⑧</td></tr>
+<tr><td style="padding:6px;border:1px solid #dfe6e9;font-weight:700">Gate 2 — Validation Review</td><td style="padding:6px;border:1px solid #dfe6e9">Step ⑯ · After eng. tests · Fail → back to ⑬</td></tr>
+<tr style="background:#f0fff8"><td style="padding:6px;border:1px solid #dfe6e9;font-weight:700">Gate 3 — Final QC</td><td style="padding:6px;border:1px solid #dfe6e9">Steps ⑳–㉓ · After operational trials · Fail → back to ⑰</td></tr>
+</table>
+<p style="margin-top:8px;color:#636e72"><strong>Key improvement:</strong> Quality was previously only at Gate 3. v2.0 catches issues at sample stage, preventing wasted engineering and trial time.</p>
+</div>
+
+<p style="text-align:center;margin-top:16px;font-size:.7em;color:#b2bec3">Escape Trailers · Change Management v2.0 · February 2026 · Scroll → to view full process</p>
+</body>
+</html>
